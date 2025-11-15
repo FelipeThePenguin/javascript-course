@@ -656,5 +656,25 @@ const products = [
       "apparel",
       "mens"
     ]
-  }
+  },
+  {
+    id: "qctv9aoh-ku5r-8azv-5o1r-suo5aewh661v",
+    image: "images/products/backpack.jpg",
+    name: "Large Black Hiking Backpack",
+    rating: {
+      stars: 4,
+      count: 4167
+    },
+    priceCents: 4300
+  }, 
+  {
+  id: "tgv3cmf9-qtjq-sebo-2at1-2nm30nbz1qjt",
+  image: "images/products/umbrella.jpg",
+  name: "Modern Green Umbrella",
+  rating: {
+    stars: 4.5,
+    count: 676
+  },
+  priceCents: 4967
+}
 ];
