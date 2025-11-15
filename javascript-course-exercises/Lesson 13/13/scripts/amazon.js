@@ -62,7 +62,12 @@ document.querySelectorAll('.js-add-to-cart')
     
     const quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
     
-    document.querySelector(`.js-added-to-cart-${productId}`).classList.add('added-to-cart-visible');
+    const addedToCartMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+    addedToCartMessage.classList.add('added-to-cart-visible');
+    
+    setTimeout(() => {
+      addedToCartMessage.classList.remove('added-to-cart-visible')
+    }, 2000);
     
     let matchingItem;
     
