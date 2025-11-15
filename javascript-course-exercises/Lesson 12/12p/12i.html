@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+  
+<button onclick="
+messages++;
+displayMessage();
+">
+ Add
+</button>
+
+<button onclick="
+messages--;
+displayMessage();
+">
+  Remove
+</button>
+
+<script>
+let messages = 2;
+let updateInterval;
+function displayMessage () {
+ 
+ if (messages === 0) {
+   clearInterval(updateInterval);
+   document.title = 'App';
+ }
+
+if (messages > 0) {
+ updateInterval = setInterval(() => {
+     document.title = `(${messages}) New Messages`;
+   }, 1000
+ );
+}
+}
+</script>
+  
+</body>
+
+</html>

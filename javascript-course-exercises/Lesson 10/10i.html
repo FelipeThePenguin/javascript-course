@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/javascript-course-exercises/Lesson 10/styles/10i.css">
+  </head>
+  <body>
+    <!-- Create an element to display the calculation. -->
+    <p class="js-calculation calculation-result"></p>
+
+    <p>
+      <button onclick="
+        updateCalculation('1'); 
+      " class="gray-button">1</button>
+
+      <button onclick="
+        updateCalculation('2');
+      " class="gray-button">2</button>
+
+      <button onclick="
+        updateCalculation('3');
+      " class="gray-button">3</button>
+
+      <button onclick="
+        updateCalculation(' + ');
+      " class="orange-button">+</button>
+    </p>
+
+    <p>
+      <button onclick="
+        updateCalculation('4');
+      " class="gray-button">4</button>
+
+      <button onclick="
+        updateCalculation('5');
+      " class="gray-button">5</button>
+
+      <button onclick="
+        updateCalculation('6');
+      " class="gray-button">6</button>
+
+      <button onclick="
+        updateCalculation(' - ');
+      " class="orange-button">-</button>
+    </p>
+
+    <p>
+      <button onclick="
+        updateCalculation('7');
+      " class="gray-button">7</button>
+
+      <button onclick="
+        updateCalculation('8');
+      " class="gray-button">8</button>
+
+      <button onclick="
+        updateCalculation('9');
+      " class="gray-button">9</button>
+
+      <button onclick="
+        updateCalculation(' * ');
+      " class="orange-button">*</button>
+    </p>
+
+    <p>
+      <button onclick="
+        updateCalculation('0');
+      " class="gray-button">0</button>
+
+      <button onclick="
+        updateCalculation('.');
+      " class="gray-button">.</button>
+
+      <button onclick="
+        // Note: eval() takes a string and runs it as code.
+        // Avoid using eval() in real world projects since
+        // it can potentially be given harmful code to run.
+        // Only use eval() for learning purposes.
+        calculation = eval(calculation);
+
+        // Display the calculation on the page
+        // instead of console.log
+        displayCalculation();
+
+        localStorage.setItem('calculation', calculation);
+      " class="gray-button">=</button>
+
+      <button onclick="
+        updateCalculation(' / ');
+      " class="orange-button">/</button>
+    </p>
+
+    <p>
+      <button onclick="
+        calculation = '';
+
+        // Display the calculation on the page
+        // instead of console.log
+        displayCalculation();
+
+        localStorage.setItem('calculation', calculation);
+      " class="gray-button clear-button">Clear</button>
+    </p>
+
+    <script src="/javascript-course-exercises/Lesson 10/scripts/10i.js">
+      
+    </script>
+  </body>
+</html>

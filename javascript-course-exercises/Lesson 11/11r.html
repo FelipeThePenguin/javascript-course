@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+
+<script>
+console.log('11r');
+
+function removeEgg(foods) {
+  let result = [];
+  
+  for (let i = 0; i < foods.length; i++) {
+    if (foods[i] === 'egg') {
+      continue;
+    }
+    result.push(foods[i]);
+ }
+ 
+ console.log(result);
+}
+
+removeEgg(['egg', 'apple', 'egg', 'egg', 'ham']);
+
+</script>
+  
+</body>
+
+</html>

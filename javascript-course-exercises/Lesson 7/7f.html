@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+  
+  <title></title>
+</head>
+
+<body>
+  
+  <script>
+  function convertToCelsius(farenheit) {
+  return (farenheit - 32) * 5 / 9
+}
+  
+function convertToFarenheit(celsius)
+{
+  return (celsius * 9 / 5) + 32
+}
+  
+   function convertTemperature(degrees, unit) {
+     
+     let result = '';
+     
+     if (unit === 'C') {
+       result = convertToFarenheit(degrees) + 'F';
+  }
+     
+     
+     if (unit === 'F') {
+       result = convertToCelsius(degrees) + 'C';
+  }
+     return result;
+   }
+     
+   
+   console.log(convertTemperature(25, 'C'));
+   console.log(convertTemperature(86, 'F'));
+  </script>
+</body>
+
+</html>

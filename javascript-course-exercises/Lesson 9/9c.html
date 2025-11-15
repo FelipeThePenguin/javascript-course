@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+  
+  <title></title>
+</head>
+
+<body>
+  
+  <button onclick="displayGuess('heads')">heads</button>
+  <button onclick="displayGuess('tails')">tails</button>
+  <p class="js-player-guess"></p>
+  
+  <script>
+   function displayGuess(guess) {
+     document.querySelector('.js-player-guess').innerHTML = `You chose: ${guess}`;
+   }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+
+<script>
+console.log('11l');
+function minMax(nums) {
+  let minNum;
+  let maxNum;
+  for (let i=0; i < nums.length; i++) {
+    minNum = (nums[i] < minNum ? nums[i] : minNum) || nums[i];
+    maxNum = (nums[i] > maxNum ? nums[i] : maxNum) || nums[i];
+  }
+  
+  if (nums.length === 0) {
+   minNum = null;
+   maxNum = null;
+  }
+  
+  return `min: ${minNum}, max: ${maxNum}`;
+ }
+ 
+ 
+ console.log(minMax([1, -3, 5]));
+      console.log(minMax([-2, 3, -5, 7, 10]));
+
+      console.log(minMax([]));
+      console.log(minMax([3]));
+ 
+</script>
+  
+</body>
+
+</html>

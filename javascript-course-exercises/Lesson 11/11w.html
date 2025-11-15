@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+
+<script>
+console.log('11w');
+
+function findIndex(array, word) {
+  let result = -1;
+  
+  for (let i = 0; i < array.length; i++) {
+   if (array[i] === word) {
+     result = i;
+     break;
+   }
+  }
+  
+  return result
+}
+
+function unique(array) {
+  let result = [];
+  
+  for (let i = 0; i < array.length; i++) {
+    if (findIndex(result, array[i]) !== -1) {
+      continue;
+    }
+    result.push(array[i]);
+  }
+  
+  return result;
+
+}
+/*
+console.log(findIndex(['green', 'red', 'blue', 'red'], 'red'));
+console.log(findIndex(['green', 'red', 'blue', 'red'], 'yellow'));*/
+
+console.log(unique(['green', 'red', 'blue', 'red']));
+console.log(unique(['red', 'green', 'green', 'red']));
+
+</script>
+  
+</body>
+
+</html>

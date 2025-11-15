@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+	
+<button class="js-button" onclick="
+ let timeoutId;
+ const addedText = document.querySelector('.js-added-text');
+ addedText.innerHTML = 'Added';
+ clearTimeout(timeoutId);
+ timeoutId = setTimeout(() => {
+addedText.innerHTML = '';
+ }, 2000
+ );
+">
+  Add to cart
+</button>
+
+<p class="js-added-text">
+  
+</p>
+<script>
+</script>
+  
+</body>
+
+</html>

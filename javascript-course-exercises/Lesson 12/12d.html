@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+	
+<button class="js-button" onclick="
+ const btn = document.querySelector('.js-button');
+ btn.innerHTML = `Loading...`;
+ setTimeout(
+  function() {
+   btn.innerHTML = `Finished!`;
+  }, 1000
+ );
+">
+  Start
+</button>
+  
+<script>
+</script>
+  
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+  
+<button class="js-add-button">
+ Add
+</button>
+
+<button class="js-remove-button">
+  Remove
+</button>
+
+<script>
+ let messages = 2;
+
+ setInterval(() => {
+     document.title = `(${messages}) New Messages`;
+   }, 1000
+ );
+ 
+document.querySelector('.js-add-button').addEventListener('click', () => messages++);
+document.querySelector('.js-remove-button').addEventListener('click', () => messages--);
+</script>
+  
+</body>
+
+</html>

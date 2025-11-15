@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+  
+  <title></title>
+</head>
+
+<body>
+  
+  <script>
+   let randomNumber = Math.random();
+   let result = '';
+   
+   let guess = 'tails';
+   // Inside the strings, put heads or tails
+   
+   result = (randomNumber < 0.5) ? 'heads' : 'tails';
+   
+   
+   console.log( (result === guess) ? 'You win!' : 'You Lose!');
+   
+  </script>
+</body>
+
+</html>

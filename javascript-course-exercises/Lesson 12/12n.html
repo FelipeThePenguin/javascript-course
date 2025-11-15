@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+  <script>eruda.init();</script>
+</head>
+
+<body>
+
+<script>
+ function removeEgg(foods) {
+   return foods.filter(value => value !== 'egg');
+ }
+ 
+ console.log(removeEgg(['egg', 'apple', 'egg', 'egg', 'ham']));
+</script>
+  
+</body>
+
+</html>
