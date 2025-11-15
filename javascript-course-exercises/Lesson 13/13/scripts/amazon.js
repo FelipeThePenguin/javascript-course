@@ -62,7 +62,7 @@ document.querySelectorAll('.js-add-to-cart')
     
     const quantity = Number(document.querySelector(`.js-quantity-selector-${productId}`).value);
     
-    document.querySelector(`.js-added-to-cart-${productId}`);
+    document.querySelector(`.js-added-to-cart-${productId}`).classList.add('added-to-cart-visible');
     
     let matchingItem;
     
