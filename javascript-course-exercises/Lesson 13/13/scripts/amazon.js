@@ -55,10 +55,10 @@ products.forEach((product) => {
 
 document.querySelector('.js-products-grid').innerHTML = productsHTML;
 
-const timeoutIds = {};
-
 document.querySelectorAll('.js-add-to-cart')
 .forEach((button) => {
+  let addedMessagesTimeout;
+  
   button.addEventListener('click', () => {
     const { productId } = button.dataset;
     
@@ -68,9 +68,11 @@ document.querySelectorAll('.js-add-to-cart')
     
     addedToCartMessage.classList.add('added-to-cart-visible');
     
-    clearInterval(timeoutIds[productId]);
+    if (addedMessagesTimeout) {
+    clearInterval(addedMessagesTimeout);
+    }
     
-    timeoutIds[`${productId}`] = setTimeout(() => {
+    addedMessagesTimeout = setTimeout(() => {
   addedToCartMessage.classList.remove('added-to-cart-visible')
 }, 2000);
     
