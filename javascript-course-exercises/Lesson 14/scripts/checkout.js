@@ -104,9 +104,12 @@ document.querySelectorAll('.js-delete-link').forEach((link) => {
     const container = document.querySelector(`.js-cart-item-container-${productId}`);
     
     container.remove();
+    
+    updateCartQuantity();
   });
 });
 
+function updateCartQuantity() {
 let cartQuantity = 0;
 
 cart.forEach((cartItem) => {
@@ -114,4 +117,7 @@ cart.forEach((cartItem) => {
 });
 
 document.querySelector('.js-return-to-home-link').innerHTML = `${cartQuantity} items`;
+}
+
+updateCartQuantity();
 
