@@ -234,3 +234,22 @@
 .is-editing-quantity .quantity-label {
   display: none;
 }
+
+.error-message {
+  font-size: 12px;
+  color: darkred;
+  font-weight: 500;
+  margin-top: 10px;
+  opacity: 0;
+}
+
+.error-message-visible {
+  opacity: 1;
+}
+
+.error-icon {
+  width: 0.8em;
+  vertical-align: baseline;
+  margin-right: 6px;
+  fill: darkred;
+}

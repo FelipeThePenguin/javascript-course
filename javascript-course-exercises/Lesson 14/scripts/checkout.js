@@ -39,12 +39,16 @@ cart.forEach((cartItem) => {
                   <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
                     Update
                   </span>
-                  <input class="quantity-input js-quantity-input-${matchingProduct.id}">
+                  <input class="quantity-input js-quantity-input js-quantity-input-${matchingProduct.id}">
                   <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchingProduct.id}">Save</span>
                   <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
+                <p class="error-message js-error-message-${matchingProduct.id}">
+                <svg viewBox="0 0 8 8" class="error-icon">
+  <path d="M1.41 0l-1.41 1.41.72.72 1.78 1.81-1.78 1.78-.72.69 1.41 1.44.72-.72 1.81-1.81 1.78 1.81.69.72 1.44-1.44-.72-.69-1.81-1.78 1.81-1.81.72-.72-1.44-1.41-.69.72-1.78 1.78-1.81-1.78-.72-.72z" />
+</svg>Invalid input. Please enter a number between 0 and 1000</p>
               </div>
 
               <div class="delivery-options">
@@ -122,22 +126,44 @@ document.querySelectorAll('.js-update-link').forEach((link) => {
 });
 
 document.querySelectorAll('.js-save-link').forEach((link) => {
+  let keydownFunction;
+  
   link.addEventListener('click', () => {
     
 const productId = link.dataset.productId;
 
-document.querySelector(`.js-cart-item-container-${productId}`).classList.remove('is-editing-quantity');
-
 const inputValue = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+
+const errorMessage = document.querySelector(`.js-error-message-${productId}`);
+
+const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
+  
+if (keydownFunction) {
+  quantityInput.removeEventListener('keydown', keydownFunction)
+
+
+quantityInput.addEventListener('keydown', keydownFunction);
+
+if (inputValue > 1000 || inputValue <= 0) {
+ errorMessage.classList.add('error-message-visible');
+  return;
+}
+
+changeQuantity();
+
+function changeQuantity() {
+
+errorMessage.classList.remove('error-message-visible');
+
+document.querySelector(`.js-cart-item-container-${productId}`).classList.remove('is-editing-quantity');
 
 updateQuantity(productId, inputValue);
 
 updateCartQuantity();
 
 document.querySelector(`.js-quantity-label-${productId}`).innerHTML = inputValue;
-
-  });
-  
+}
+  }});
 });
 
 function updateCartQuantity() {
@@ -147,4 +173,3 @@ document.querySelector('.js-return-to-home-link').innerHTML = `${cartQuantity} i
 }
 
 updateCartQuantity();
-
