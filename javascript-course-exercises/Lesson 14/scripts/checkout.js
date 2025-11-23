@@ -126,32 +126,29 @@ document.querySelectorAll('.js-update-link').forEach((link) => {
 });
 
 document.querySelectorAll('.js-save-link').forEach((link) => {
-  let keydownFunction;
+  const productId = link.dataset.productId;
+  
+  const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
+  
+  quantityInput.addEventListener('keydown', () => {
+  if (event.key === 'Enter') {
+  renderUpdateQuantity()
+  }
+  });
   
   link.addEventListener('click', () => {
-    
-const productId = link.dataset.productId;
-
-const inputValue = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+  renderUpdateQuantity()
+  });
+  
+function renderUpdateQuantity() {
+    const inputValue = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
 
 const errorMessage = document.querySelector(`.js-error-message-${productId}`);
 
-const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
-  
-if (keydownFunction) {
-  quantityInput.removeEventListener('keydown', keydownFunction)
-
-
-quantityInput.addEventListener('keydown', keydownFunction);
-
 if (inputValue > 1000 || inputValue <= 0) {
- errorMessage.classList.add('error-message-visible');
+  errorMessage.classList.add('error-message-visible');
   return;
 }
-
-changeQuantity();
-
-function changeQuantity() {
 
 errorMessage.classList.remove('error-message-visible');
 
@@ -162,8 +159,8 @@ updateQuantity(productId, inputValue);
 updateCartQuantity();
 
 document.querySelector(`.js-quantity-label-${productId}`).innerHTML = inputValue;
-}
-  }});
+  }
+  
 });
 
 function updateCartQuantity() {
