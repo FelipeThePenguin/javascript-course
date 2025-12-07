@@ -1,4 +1,4 @@
-import { cart, removeFromCart, updateDeliveryOption } from '../../data/cart.js';
+import { cart, removeFromCart, updateDeliveryOption, updateQuantity, calculateCartQuantity } from '../../data/cart.js';
 import { products, getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
@@ -41,15 +41,24 @@ export function renderOrderSummary() {
                 </div>
                 <div class="product-quantity">
                   <span>
-                    Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                    Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                                   <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
                     Update
+                  </span>
+                  <input class="quantity-input js-quantity-input js-quantity-input-${matchingProduct.id}">
+                  <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchingProduct.id}">Save</span>
                   </span>
                   <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
+                  
                 </div>
+                
+             <p class="error-message js-error-message-${matchingProduct.id}">
+                <svg viewBox="0 0 8 8" class="error-icon">
+  <path d="M1.41 0l-1.41 1.41.72.72 1.78 1.81-1.78 1.78-.72.69 1.41 1.44.72-.72 1.81-1.81 1.78 1.81.69.72 1.44-1.44-.72-.69-1.81-1.78 1.81-1.81.72-.72-1.44-1.41-.69.72-1.78 1.78-1.81-1.78-.72-.72z" />
+</svg>Invalid input. Please enter a number between 0 and 1000</p>
               </div>
 
               <div class="delivery-options">
@@ -99,6 +108,56 @@ export function renderOrderSummary() {
   }
   
   document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+  
+  document.querySelectorAll('.js-update-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+    
+    document.querySelector(`.js-cart-item-container-${productId}`).classList.add('is-editing-quantity');
+
+    console.log(productId);
+  });
+});
+
+document.querySelectorAll('.js-save-link').forEach((link) => {
+  const productId = link.dataset.productId;
+  
+  const quantityInput = document.querySelector(`.js-quantity-input-${productId}`);
+  
+  quantityInput.addEventListener('keydown', () => {
+  if (event.key === 'Enter') {
+  renderUpdateQuantity()
+  }
+  });
+  
+  link.addEventListener('click', () => {
+  renderUpdateQuantity()
+  });
+  
+function renderUpdateQuantity() {
+    const inputValue = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+
+const errorMessage = document.querySelector(`.js-error-message-${productId}`);
+
+if (inputValue > 1000 || inputValue <= 0) {
+  errorMessage.classList.add('error-message-visible');
+  return;
+}
+
+errorMessage.classList.remove('error-message-visible');
+
+document.querySelector(`.js-cart-item-container-${productId}`).classList.remove('is-editing-quantity');
+
+updateQuantity(productId, inputValue);
+
+renderCheckoutHeader();
+renderOrderSummary();
+renderPaymentSummary();
+}
+  
+});
+
+
   
   document.querySelectorAll('.js-delete-link').forEach((link) => {
     link.addEventListener('click', () => {
