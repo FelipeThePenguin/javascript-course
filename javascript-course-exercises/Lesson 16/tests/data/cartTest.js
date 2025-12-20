@@ -128,4 +128,22 @@ describe('test suite: updateDeliveryOption', () => {
 }]));
   });
   
+  it('updates the delivery option of a product that is not in the cart', () => {
+    spyOn(localStorage, 'setItem');
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return JSON.stringify([{
+        productId: productId1,
+        quantity: 1,
+        deliveryOptionId: '1'
+    }])
+    });
+    
+    loadFromStorage();
+    updateDeliveryOption('the-6-7-song-and-you-will-sing-along', '3');
+    expect(cart.length).toEqual(1);
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryOptionId).toEqual('1');
+    expect(localStorage.setItem).toHaveBeenCalledTimes(0);
+  });
+  
 });
