@@ -146,4 +146,22 @@ describe('test suite: updateDeliveryOption', () => {
     expect(localStorage.setItem).toHaveBeenCalledTimes(0);
   });
   
+  it('uses a deliveryOptionId that does not exist', () => {
+    spyOn(localStorage, 'setItem');
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return JSON.stringify([{
+        productId: productId1,
+        quantity: 1,
+        deliveryOptionId: '1'
+    }])
+    });
+    
+    loadFromStorage();
+    updateDeliveryOption(productId1, '67');
+    expect(cart.length).toEqual(1);
+    expect(cart[0].productId).toEqual(productId1);
+    expect(cart[0].deliveryOptionId).toEqual('1');
+    expect(localStorage.setItem).toHaveBeenCalledTimes(0);
+  });
+  
 });

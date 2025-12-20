@@ -23,3 +23,15 @@ export function getDeliveryOption(deliveryOptionId) {
     
     return deliveryOption || deliveryOptions[0];
 }
+
+export function validateDeliveryOption(deliveryOptionId) {
+  let deliveryOption;
+  
+  deliveryOptions.forEach((option) => {
+    if (option.id === deliveryOptionId) {
+      deliveryOption = option;
+    }
+  });
+  
+  return deliveryOption || false;
+}
