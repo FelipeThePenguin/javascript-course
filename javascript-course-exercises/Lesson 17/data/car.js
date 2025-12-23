@@ -2,6 +2,7 @@ class Car {
   brand;
   model;
   speed = 0;
+  isTrunkOpen = false;
 
   constructor(carDetails) {
     this.brand = carDetails.brand;
@@ -9,21 +10,30 @@ class Car {
   }
   
   displayInfo() {
-    console.log(`${this.brand} - ${this.model}, Speed: ${this.speed} km/h`);
+    console.log(`${this.brand} - ${this.model}, Speed: ${this.speed} km/h. Trunk is ${this.isTrunkOpen ? 'Open' : 'Closed'}`);
   }
   
   go() {
-   if (this.speed === 200) {
-     return;
+   if (this.speed < 200 && !this.isTrunkOpen) {
+     this.speed += 5;
    }
-   this.speed += 5;
   }
   
   brake() {
-   if (this.speed > 0)
-   this.speed -= 5;
+   if (this.speed > 0) {
+     this.speed -= 5;
+   }
   }
-  
+
+  openTrunk() {
+   if (this.speed === 0) {
+    this.isTrunkOpen = true;
+   }
+  }
+
+  closeTrunk() {
+   this.isTrunkOpen = false;
+  }
 }
 
 function repeatFunctionTimes(fun, num) {
@@ -56,6 +66,17 @@ car2.displayInfo();
 repeatFunctionTimes(() => {car1.go()}, 14);
 repeatFunctionTimes(() => {car1.brake()}, 6);
 repeatFunctionTimes(() => {car2.go()}, 7);
+car1.openTrunk();
+// This should not open the trunk of car1
+
+car2.speed = 0;
+car2.openTrunk();
+car2.go();
+// car2 should not go
+
+car2.closeTrunk();
+repeatFunctionTimes(() => {car2.go()}, 21);
+// car 2 should go
 
 car1.displayInfo();
 car2.displayInfo();
