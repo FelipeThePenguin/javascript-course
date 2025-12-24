@@ -1,16 +1,16 @@
 class Car {
-  brand;
-  model;
+  #brand;
+  #model;
   speed = 0;
   isTrunkOpen = false;
 
   constructor(carDetails) {
-    this.brand = carDetails.brand;
-    this.model = carDetails.model;
+    this.#brand = carDetails.brand;
+    this.#model = carDetails.model;
   }
   
   displayInfo() {
-    console.log(`${this.brand} - ${this.model}, Speed: ${this.speed} km/h. Trunk is ${this.isTrunkOpen ? 'Open' : 'Closed'}`);
+    console.log(`${this.#brand} - ${this.#model}, Speed: ${this.speed} km/h. Trunk is ${this.isTrunkOpen ? 'Open' : 'Closed'}`);
   }
   
   go() {
@@ -120,3 +120,6 @@ car2.displayInfo();
 repeatFunctionTimes(() => {raceCar1.go()}, 15);
 raceCar1.openTrunk();
 raceCar1.displayInfo();
+
+// car2.#model = 'Model 67';
+// This should result to an error
