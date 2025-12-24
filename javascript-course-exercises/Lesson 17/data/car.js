@@ -14,8 +14,12 @@ class Car {
   }
   
   go() {
-   if (this.speed < 200 && !this.isTrunkOpen) {
+   if (this.speed <= 200 && !this.isTrunkOpen) {
      this.speed += 5;
+     return;
+   }
+   if (!this.isTrunkOpen) {
+   this.speed = 200;
    }
   }
   
@@ -36,6 +40,32 @@ class Car {
   }
 }
 
+class RaceCar extends Car {
+  acceleration;
+
+  constructor(carDetails) {
+    super(carDetails);
+    
+    this.acceleration = carDetails.acceleration;
+  }
+  
+  go() {
+   if (this.speed <= 300) {
+     this.speed += this.acceleration;
+     return;
+   }
+   this.speed = 300;
+  }
+  
+  openTrunk() {
+   return;
+  }
+
+  closeTrunk() {
+   return;
+  }
+}
+
 function repeatFunctionTimes(fun, num) {
   
   for(let i = 0; i < num; i++) {
@@ -51,6 +81,12 @@ const car1 = new Car({
 const car2 = new Car({
   brand: 'Tesla',
   model: 'Model 3'
+});
+
+const raceCar1 = new RaceCar({
+  brand: 'McLaren',
+  model: 'F1',
+  acceleration: 20
 });
 
 /*
@@ -80,3 +116,7 @@ repeatFunctionTimes(() => {car2.go()}, 21);
 
 car1.displayInfo();
 car2.displayInfo();
+
+repeatFunctionTimes(() => {raceCar1.go()}, 15);
+raceCar1.openTrunk();
+raceCar1.displayInfo();
