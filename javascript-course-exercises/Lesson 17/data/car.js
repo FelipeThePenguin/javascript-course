@@ -118,6 +118,8 @@ car1.displayInfo();
 car2.displayInfo();
 
 repeatFunctionTimes(() => {raceCar1.go()}, 15);
+// RaceCar couldn't access the private speed property so it will result to 0
+
 raceCar1.openTrunk();
 raceCar1.displayInfo();
 
