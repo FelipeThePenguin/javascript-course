@@ -17,14 +17,12 @@
 <body>
 
   <script>
-   const xhr = new XMLHttpRequest();
    
-   xhr.addEventListener('load', () => {
-     console.log(xhr.response);
+   fetch('https://supersimplebackend.dev/greeting').then((response) => {
+    return response.text();
+   }).then((text) => {
+     console.log(text);
    });
-   
-   xhr.open('GET', 'https://supersimplebackend.dev/greeting');
-   xhr.send();
 
   </script>
 
