@@ -1,7 +1,8 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { formatCurrency } from './utils/money.js';
 import { orders } from '../data/orders.js';
-import { getProduct, loadProductsFetch } from '../data/products.js'; 
+import { getProduct, loadProductsFetch } from '../data/products.js';
+import { cart, addToCart } from '../data/cart.js';
 
 export async function loadPage() {
   await loadProductsFetch()
@@ -61,14 +62,15 @@ export async function loadPage() {
               <div class="product-quantity">
                 Quantity: ${product.quantity}
               </div>
-              <button class="buy-again-button button-primary">
+              <button class="js-buy-again-button buy-again-button button-primary" 
+              data-product-id="${product.productId}">
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
               </button>
             </div>
 
             <div class="product-actions">
-              <a href="tracking.html?orderId=123&productId=456">
+              <a href="tracking.html?orderId=${orderId}&productId=${product.productId}">
                 <button class="track-package-button button-secondary">
                   Track package
                 </button>
@@ -80,6 +82,30 @@ export async function loadPage() {
  }
 
  document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
+ 
+ document.querySelectorAll('.js-buy-again-button').forEach((button) => {
+   button.addEventListener('click' , () => {
+     const { productId } = button.dataset;
+     let matchingProduct;
+     
+     cart.forEach((cartItem) => {
+      if (cartItem.productId === productId) {
+        matchingProduct = cartItem;
+      }
+     });
+     
+     if (!matchingProduct) {
+       addToCart(productId);
+     } else if (matchingProduct.quantity + 1 < 1000) {
+       addToCart(productId);
+     }
+     else { 
+       alert('Maximum quantity reached! Product quantity must be less than 1000');
+     }
+     
+    
+   });
+ });
 }
 
 loadPage();
