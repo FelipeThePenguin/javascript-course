@@ -9,7 +9,7 @@ function saveToStorage() {
   localStorage.setItem('orders', JSON.stringify(orders));
 }
 
-function getOrder(orderId) {
+export function getOrder(orderId) {
   let matchingOrder;
   
   orders.forEach((order) => {
