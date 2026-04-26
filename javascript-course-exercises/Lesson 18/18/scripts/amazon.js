@@ -9,10 +9,26 @@ loadProductsFetch().then(() => {
   if (search) {
     let newItemsCount = 0;
     const newArray = [];
-   
+    
+    let containsKeyword;
+  
+    products.forEach((product) => {
+      product.keywords.forEach((keyword) => {
+        if ( (search.toLowerCase()).includes(keyword.toLowerCase())) {
+         newItemsCount++;
+         newArray.push(product);
+        
+        return;
+        
+        }
+      });
+    });
+
     products.forEach((product) => {
       
-      if (product.name.includes(search)) {
+     if (
+        (product.name.toLowerCase()).includes(search.toLowerCase()) && !newArray.includes(product)
+     ){
        newItemsCount++;
        newArray.push(product);
       }
@@ -24,9 +40,11 @@ loadProductsFetch().then(() => {
     newArray.forEach((product) => {
       products.push(product);
     });
+    
   }
   
-  renderProductsGrid()
+  renderProductsGrid();
+  
 });
 
 function renderProductsGrid() {
@@ -120,4 +138,3 @@ document.querySelectorAll('.js-add-to-cart')
  });
 
 }
-
