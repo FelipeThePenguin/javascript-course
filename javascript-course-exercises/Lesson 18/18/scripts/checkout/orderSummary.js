@@ -1,9 +1,8 @@
-import { cart, removeFromCart, updateDeliveryOption } from '../../data/cart.js';
-import { products, getProduct } from '../../data/products.js';
-import { formatCurrency } from '../utils/money.js';
-import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
+import {cart, removeFromCart, updateDeliveryOption, calculateCartQuantity, updateQuantity} from '../../data/cart.js';
+import {products, getProduct} from '../../data/products.js';
+import {formatCurrency} from '../utils/money.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import {deliveryOptions, getDeliveryOption} from '../../data/deliveryOptions.js';
 import {renderPaymentSummary} from './paymentSummary.js';
 
 export function renderOrderSummary() {
@@ -49,11 +48,16 @@ export function renderOrderSummary() {
                 </div>
                 <div class="product-quantity js-product-quantity-${matchingProduct.id}">
                   <span>
-                    Quantity: <span class="quantity-label">${cartItem.quantity}</span>
+                    Quantity: <span class="quantity-label js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <span class="update-quantity-link link-primary js-update-link" data-product-id="${matchingProduct.id}">
                     Update
                   </span>
+                  
+                  <input class="quantity-input js-quantity-input js-quantity-input-${matchingProduct.id}"
+                  data-product-id="${matchingProduct.id}">
+                  <span class="save-quantity-link link-primary js-save-link" data-product-id="${matchingProduct.id}">Save</span>
+                  
                   <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${matchingProduct.id}" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
@@ -124,7 +128,55 @@ export function renderOrderSummary() {
       
       container.remove();
       
+      updateCartQuantity();
       renderPaymentSummary();
+    });
+  });
+  
+  document.querySelectorAll('.js-update-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      const {productId} = link.dataset;
+      
+      const cartItem = document.querySelector(`.js-cart-item-container-${productId}`);
+      cartItem.classList.add('is-editing-quantity');
+    });
+  });
+  
+  function saveToCart(productId) {
+      
+      const cartItem = document.querySelector(`.js-cart-item-container-${productId}`);
+      cartItem.classList.remove('is-editing-quantity');
+      
+      const inputValue = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
+      
+      if (inputValue < 0 || inputValue >= 1000) {
+        alert('Please enter a value from 0 to 999');
+        return;
+      }
+      
+      updateQuantity(productId, inputValue);
+      
+      document.querySelector(`.js-quantity-label-${productId}`).innerHTML = inputValue;
+      updateCartQuantity();
+    
+      renderPaymentSummary();
+  }
+  
+  document.querySelectorAll('.js-quantity-input').forEach((input) => {
+    input.addEventListener('keydown', (event) => {
+      const {productId} = input.dataset;
+      
+      if (event.key === 'Enter') {
+        saveToCart(productId);
+      }
+    });
+  });
+  
+  document.querySelectorAll('.js-save-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      const {productId} = link.dataset;
+      
+      saveToCart(productId);
     });
   });
   
@@ -136,4 +188,13 @@ export function renderOrderSummary() {
       renderPaymentSummary();
     });
   });
+  
+  function updateCartQuantity() {
+    
+    document.querySelector('.js-home-link').innerHTML = `${calculateCartQuantity()} items`;
+  
+  }
+  
+  updateCartQuantity();
+  
 }
