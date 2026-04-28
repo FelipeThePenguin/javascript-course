@@ -12,7 +12,7 @@ export function getProduct(productId) {
   return matchingProduct;
 }
 
-class Product {
+export class Product {
   id;
   image;
   name;
@@ -42,12 +42,14 @@ class Product {
   }
 }
 
-class Clothing extends Product{
+export class Clothing extends Product{
   sizeChartLink;
+  type;
   
   constructor(productDetails) {
     super(productDetails);
     this.sizeChartLink = productDetails.sizeChartLink;
+    this.type = productDetails.type;
   }
   
   extraInfoHTML() {
@@ -57,6 +59,31 @@ class Clothing extends Product{
    Size chart
   </a>
   `;
+  }
+}
+
+export class Appliance extends Product {
+  instructionsLink;
+  warrantyLink;
+  type;
+
+  constructor(productDetails) {
+   super(productDetails);
+
+   this.instructionsLink = productDetails.instructionsLink;
+   this.warrantyLink = productDetails.warrantyLink;
+   this.type = productDetails.type;
+  }
+
+  extraInfoHTML() {
+    return `
+    <a href="${this.instructionsLink}" target="_blank">
+     Instructions
+    </a>
+    <a href="${this.warrantyLink}" target="_blank">
+     Warranty
+    </a>
+    `;
   }
 }
 
@@ -99,9 +126,15 @@ export function loadProductsFetch() {
     return response.json();
   })
   .then((productsData) => {
-    products = productsData.map((productDetails) => {
+  products = productsData.map((productDetails) => {
   if (productDetails.type === 'clothing') {
     return new Clothing(productDetails);
+  } else if (productDetails.keywords.includes('appliances')) {
+    productDetails.type = 'appliances';
+    productDetails.instructionsLink = 'images/appliance-instructions.png';
+    productDetails.warrantyLink = 'images/appliance-warranty.png';
+
+    return new Appliance(productDetails);
   }
   
   return new Product(productDetails);

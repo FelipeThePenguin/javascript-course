@@ -5,6 +5,8 @@ import {renderCheckoutHeader} from './checkout/checkoutHeader.js';
 import {loadProducts, loadProductsFetch} from '../data/products.js';
 import {loadCart, loadCartFetch} from '../data/cart.js';
 
+import '../data/car.js';
+
 async function loadPage() {
   try {
     await Promise.all([
