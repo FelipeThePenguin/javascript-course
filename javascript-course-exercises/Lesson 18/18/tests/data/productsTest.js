@@ -20,11 +20,11 @@ describe('test suite: getProduct', () => {
   });
   
   it('returns undefined by using an id that does not exist', () => {
-  const productId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
-  
-  const product2 = getProduct('id-that-does-not-exist');
-  
-  expect(product2).toEqual(undefined);
-});
+    const productId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6';
+    
+    const product2 = getProduct('id-that-does-not-exist');
+    
+    expect(product2).toEqual(undefined);
+  });
   
 });
