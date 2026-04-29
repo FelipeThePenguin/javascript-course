@@ -3,6 +3,8 @@ import { formatCurrency } from './utils/money.js';
 import { orders } from '../data/orders.js';
 import { getProduct, loadProductsFetch } from '../data/products.js';
 import { cart, addToCart } from '../data/cart.js';
+import {renderAmazonHeader} from './shared/amazonHeader.js';
+
 
 export async function loadPage() {
   await loadProductsFetch()
@@ -108,4 +110,5 @@ export async function loadPage() {
  });
 }
 
+renderAmazonHeader();
 loadPage();

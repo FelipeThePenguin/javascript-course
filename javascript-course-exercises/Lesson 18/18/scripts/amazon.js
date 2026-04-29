@@ -1,13 +1,22 @@
 import {cart, addToCart, calculateCartQuantity} from '../data/cart.js';
 import {products, loadProducts, loadProductsFetch} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
+import {renderAmazonHeader} from './shared/amazonHeader.js';
+
+function filterProducts() {
 
 const url = new URL(window.location.href);
 const search = url.searchParams.get('search');
+const filter = JSON.parse(url.searchParams.get('filter'));
+
+renderAmazonHeader();
 
 loadProductsFetch().then(() => {
-  if (search) {
-    let newItemsCount = 0;
+  
+  if (search || filter) {
+     const searchInput = document.querySelector('.js-search-bar');
+     searchInput.value = search;
+
     const newArray = [];
     
     let containsKeyword;
@@ -15,7 +24,6 @@ loadProductsFetch().then(() => {
     products.forEach((product) => {
       product.keywords.forEach((keyword) => {
         if ( (search.toLowerCase()).includes(keyword.toLowerCase())) {
-         newItemsCount++;
          newArray.push(product);
         
         return;
@@ -29,7 +37,6 @@ loadProductsFetch().then(() => {
      if (
         (product.name.toLowerCase()).includes(search.toLowerCase()) && !newArray.includes(product)
      ){
-       newItemsCount++;
        newArray.push(product);
       }
       
@@ -40,12 +47,32 @@ loadProductsFetch().then(() => {
     newArray.forEach((product) => {
       products.push(product);
     });
+   
+    newArray.splice(0, products.length);
     
+    products.forEach((product) => {
+
+     if (
+       product.rating.stars >= filter.starsRange &&
+       product.rating.count >= filter.ratingsRange.min && product.rating.count <= filter.ratingsRange.max &&
+       product.priceCents >= filter.priceRange.min && product.priceCents <= filter.priceRange.max
+     ){
+       newArray.push(product);
+      }
+
+    });
+
+    products.splice(0, products.length);
+
+    newArray.forEach((product) => {
+      products.push(product);
+    });
+
   }
-  
   renderProductsGrid();
-  
 });
+
+}
 
 function renderProductsGrid() {
 
@@ -139,13 +166,8 @@ document.querySelectorAll('.js-add-to-cart')
   updateCartQuantity();
   });
 });
- 
- const searchButton = document.querySelector('.js-search-button');
- 
- searchButton.addEventListener('click', () => {
-   const searchInput = document.querySelector('.js-search-bar').value;
-   
-   window.location.href = `amazon.html?search=${searchInput}`;
- });
 
 }
+
+filterProducts();
+

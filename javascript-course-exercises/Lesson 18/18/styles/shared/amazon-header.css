@@ -96,6 +96,96 @@
   margin-top: 3px;
 }
 
+.filter-button {
+  border: none;
+  width: 45px;
+  height: 40px;
+  flex-shrink: 0;
+  background-color: transparent;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.filter-settings {
+  position: absolute;
+  bottom: -240px;
+  z-index: 100;
+
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.45);
+
+  padding: 6px 15px 25px 15px;
+  width: 150px;
+
+  display: none;
+}
+
+.is-filtering-products .filter-settings {
+  display: initial;
+}
+
+.filter-settings p {
+  text-align: left;
+  font-weight: 400;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.filter-icon {
+  height: 24px;
+  margin-top: 3px;
+  margin-left: 2px;
+}
+
+.stars-input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+}
+
+.stars-display {
+  width: 100%;
+}
+
+.stars-input {
+  width: 100%;
+  height: 28px;
+  position: absolute;
+
+  opacity: 0;
+}
+
+.filter-input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-input-start,
+.filter-input-end {
+  width: 30px;
+  padding: 2px;
+}
+
+.filter-input-start::placeholder,
+.filter-input-end::placeholder {
+  font-size: 10px;
+}
+
+.filter-price input {
+  margin-left: 3px;
+}
+
+.filter-price {
+  margin-bottom: 12px;
+}
+
 .amazon-header-right-section {
   width: 180px;
   flex-shrink: 0;
