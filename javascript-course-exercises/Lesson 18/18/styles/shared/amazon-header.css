@@ -107,11 +107,13 @@
   justify-content: center;
   align-items: center;
   position: relative;
+
+  cursor: auto;
 }
 
 .filter-settings {
   position: absolute;
-  bottom: -240px;
+  bottom: -300px;
   z-index: 100;
 
   border-radius: 5px;
@@ -139,6 +141,8 @@
   height: 24px;
   margin-top: 3px;
   margin-left: 2px;
+
+  cursor: pointer;
 }
 
 .stars-input-container {
@@ -159,6 +163,11 @@
   position: absolute;
 
   opacity: 0;
+  cursor: grab;
+}
+
+.stars-input:active {
+  cursor: grabbing;
 }
 
 .filter-input-container {
@@ -184,6 +193,73 @@
 
 .filter-price {
   margin-bottom: 12px;
+}
+
+
+.current-currency-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: relative;
+
+  cursor: pointer;
+}
+
+.currency-options {
+  position: absolute;
+  z-index: 101;
+
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+
+  left: 0;
+  right: 0;
+  bottom: -160px;
+  
+  display: none;
+}
+
+.currency-option {
+  display: flex;
+  justify-content: space-between;
+  background-color: transparent;
+
+  padding: 12px 8px;
+  transition: background-color 0.15s;
+  cursor: pointer;
+}
+
+.currency-option:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.currency-option-image {
+  margin-left: 2px;
+  width: 40px;
+}
+
+.currency-option-type {
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.currency-arrow {
+  height: 8px;
+  margin-left: 5px;
+
+  transition: rotate 0.15s;
+}
+
+.is-editing-currency .currency-options{
+ display: initial;
+}
+
+.is-editing-currency .currency-arrow {
+  rotate: 90deg;
 }
 
 .amazon-header-right-section {

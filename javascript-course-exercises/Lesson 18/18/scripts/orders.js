@@ -1,10 +1,9 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { formatCurrency } from './utils/money.js';
+import { convertCurrency } from './utils/currency.js';
 import { orders } from '../data/orders.js';
 import { getProduct, loadProductsFetch } from '../data/products.js';
 import { cart, addToCart } from '../data/cart.js';
 import {renderAmazonHeader} from './shared/amazonHeader.js';
-
 
 export async function loadPage() {
   await loadProductsFetch()
@@ -25,7 +24,7 @@ export async function loadPage() {
               </div>
               <div class="order-total">
                 <div class="order-header-label">Total:</div>
-                <div>$${formatCurrency(order.totalCostCents)}</div>
+                <div>${convertCurrency(order.totalCostCents)}</div>
               </div>
             </div>
 

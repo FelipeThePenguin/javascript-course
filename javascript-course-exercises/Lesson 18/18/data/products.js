@@ -1,4 +1,4 @@
-import {formatCurrency} from '../scripts/utils/money.js';
+import {convertCurrency} from '../scripts/utils/currency.js';
 
 export function getProduct(productId) {
   let matchingProduct;
@@ -34,7 +34,7 @@ export class Product {
   }
 
   getPrice(){
-    return `$${formatCurrency(this.priceCents)}`;
+    return `${convertCurrency(this.priceCents)}`;
   }
   
   extraInfoHTML() {

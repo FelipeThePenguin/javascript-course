@@ -49,6 +49,9 @@ describe('test suite: getProduct', () => {
 describe('test suite: Product', () => {
   beforeAll( async () => {
     await loadProductsFetch();
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return 'USD';
+    });
   });
   
 
@@ -74,6 +77,9 @@ describe('test suite: Product', () => {
 describe('test suite: Clothing', () => {
   beforeAll( async () => {
     await loadProductsFetch();
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return 'USD';
+    });
   });
   
 
@@ -103,6 +109,9 @@ describe('test suite: Clothing', () => {
 describe('test suite: Appliance', () => {
   beforeAll( async () => {
     await loadProductsFetch();
+    spyOn(localStorage, 'getItem').and.callFake(() => {
+      return 'USD';
+    });
   });
   
 

@@ -1,7 +1,15 @@
 import { calculateCartQuantity } from "../../data/cart.js";
+import { currencies } from '../utils/currency.js';
 
 export function renderAmazonHeader() {
  const amazonHeader = document.querySelector('.js-amazon-header');
+ const selectedCurrency = localStorage.getItem('currency') || 'USD';
+ const currencyDetails = {
+  'USD': 'american',
+  'EUR': 'european',
+  'JPY': 'japanese'
+ };
+const currencyRate = currencies[selectedCurrency].value;
 
  amazonHeader.innerHTML = `
   <div class="amazon-header-left-section">
@@ -23,7 +31,7 @@ export function renderAmazonHeader() {
         <button class="filter-button js-filter-button">
           <img class="filter-icon js-filter-icon" src="images/icons/filter-products-icon.png">
 
-          <div class="filter-settings">
+          <div class="filter-settings js-filter-settings">
             <div class="filter-ratings-stars filter-option">
               <p>Stars rating:</p>
               <div class="stars-input-container">
@@ -43,16 +51,38 @@ export function renderAmazonHeader() {
               <p>Price range:</p>
               <div class="filter-input-container">
                <div>
-                <span class="filter-currency">&cent;</span> <input class="filter-input-start js-price-min" placeholder="Min"> 
+                <span class="filter-currency">${currencies[selectedCurrency].type}</span> <input class="filter-input-start js-price-min" placeholder="Min"> 
                </div>
                <span>-</span>
                <div>
-                <span class="filter-currency">&cent;</span> <input class="filter-input-end js-price-max" placeholder="Max">
+                <span class="filter-currency">${currencies[selectedCurrency].type}</span> <input class="filter-input-end js-price-max" placeholder="Max">
                </div>
               </div>
             </div>
             <span class="link-primary js-clear-filter">Clear</span>
-          </div>
+            <div class="change-currency">
+             <p>Change currency:</p>
+             <div class="change-currency-option">
+              <div class="current-currency-option js-current-currency-option">
+               <img src="images/flags/${currencyDetails[selectedCurrency]}-flag.webp" class="currency-option-image"> 
+               <div class="currency-option-type">${selectedCurrency}<img src="images/icons/right-arrow.png" class="currency-arrow"></div>
+              </div>
+
+              <div class="currency-options">
+               <div class="currency-option js-current-option" data-currency-option="USD">
+                <img src="images/flags/american-flag.webp" class="currency-option-image"> <span class="currency-option-type">USD</span>
+               </div>
+               <div class="currency-option js-current-option" data-currency-option="EUR">
+                <img src="images/flags/european-flag.webp" class="currency-option-image"> <span class="currency-option-type">EUR</span>
+               </div>
+               <div class="currency-option js-current-option" data-currency-option="JPY">
+                <img src="images/flags/japanese-flag.webp" class="currency-option-image"> <span class="currency-option-type">JPY</span>
+               </div>
+              </div>
+
+             </div> <!-- Change Currency Options -->
+            </div> <!-- Change Currency -->
+          </div> <!-- Filter settings -->
         </button>
       </div>
 
@@ -91,11 +121,11 @@ export function renderAmazonHeader() {
     starsRange: Number(starsValue)/2, 
     ratingsRange: {
       min: Number(ratingMinValue) ? Number(ratingMinValue) : 0,
-      max: Number(ratingMaxValue) ? Number(ratingMaxValue) : 10000
+      max: Number(ratingMaxValue) ? Number(ratingMaxValue) : 999999
     },
     priceRange: {
-      min: Number(priceMinValue) ? Number(priceMinValue) : 0,
-      max: Number(priceMaxValue) ? Number(priceMaxValue) : 10000
+      min: Number(priceMinValue) ? (Number(priceMinValue)/currencyRate).toFixed(2) : 0,
+      max: Number(priceMaxValue) ? (Number(priceMaxValue)/currencyRate).toFixed(2) : 999999
     }
    };
    
@@ -129,5 +159,25 @@ export function renderAmazonHeader() {
 
  document.querySelector('.js-clear-filter').addEventListener('click', () => {
   renderAmazonHeader();
+ });
+
+ document.querySelector('.js-current-currency-option').addEventListener('click', () => {
+  const filterSettings = document.querySelector('.js-filter-settings');
+  
+  if (filterSettings.classList.contains('is-editing-currency')) {
+     filterSettings.classList.remove('is-editing-currency');
+  } else {
+     filterSettings.classList.add('is-editing-currency');
+  }
+ });
+
+ document.querySelectorAll('.js-current-option').forEach((option) => {
+  option.addEventListener('click', () => {
+   const {currencyOption} = option.dataset;
+
+   localStorage.setItem('currency', currencyOption);
+
+   window.location.href = window.location.href;
+  });
  });
 }

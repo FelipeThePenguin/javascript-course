@@ -55,7 +55,7 @@ loadProductsFetch().then(() => {
      if (
        product.rating.stars >= filter.starsRange &&
        product.rating.count >= filter.ratingsRange.min && product.rating.count <= filter.ratingsRange.max &&
-       product.priceCents >= filter.priceRange.min && product.priceCents <= filter.priceRange.max
+       product.priceCents >= Number(filter.priceRange.min) * 100 && Number(product.priceCents) <= filter.priceRange.max * 100
      ){
        newArray.push(product);
       }

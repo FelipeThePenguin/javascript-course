@@ -4,7 +4,7 @@ import {cart, removeFromCart, updateDeliveryOption, calculateCartQuantity, updat
 import {products, getProduct} from '../../data/products.js';
 import {deliveryOptions, getDeliveryOption, calculateDeliveryDate} from '../../data/deliveryOptions.js';
 
-import {formatCurrency} from '../utils/money.js';
+import {convertCurrency} from '../utils/currency.js';
 import {renderPaymentSummary} from './paymentSummary.js';
 import {renderCheckoutHeader} from './checkoutHeader.js';
 
@@ -76,7 +76,7 @@ export function renderOrderSummary() {
       
       const priceString = deliveryOption.priceCents === 0 ?
         'FREE' :
-        `$${formatCurrency(deliveryOption.priceCents)} - `;
+        `${convertCurrency(deliveryOption.priceCents)} - `;
       
       const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
       
