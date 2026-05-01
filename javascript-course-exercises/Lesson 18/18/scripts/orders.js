@@ -1,20 +1,38 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { convertCurrency } from './utils/currency.js';
-import { orders } from '../data/orders.js';
+
+import { orders, calculateOrderProgress, allIsDelivered, addExpirationDate, removeOrder} from '../data/orders.js';
 import { getProduct, loadProductsFetch } from '../data/products.js';
 import { cart, addToCart } from '../data/cart.js';
+
 import {renderAmazonHeader} from './shared/amazonHeader.js';
 
 export async function loadPage() {
-  await loadProductsFetch()
+  await loadProductsFetch();
   
   let ordersHTML = ``;
   
   orders.forEach((order) => {
     const orderDate = dayjs(order.orderTime);
-    
+
+    const productsAreDelivered = allIsDelivered(order);
+    let hasExpired;
+
+    if (productsAreDelivered) {
+      const expirationDate = dayjs(addExpirationDate(order));
+      const today = dayjs();
+
+      hasExpired = expirationDate.diff(today, 'hours');
+
+      if (hasExpired <= 0) {
+        removeOrder(order.id);
+        
+        window.location.href = window.location.href;
+      }
+    }
+  
     ordersHTML += `        
-    <div class="order-container">
+    <div class="order-container ${productsAreDelivered ? 'all-is-delivered' : ''}">
           
           <div class="order-header">
             <div class="order-header-left-section">
@@ -37,6 +55,11 @@ export async function loadPage() {
           <div class="order-details-grid">
             ${productDetailsHTML(order.products, order.id)}
           </div>
+          
+          <div class="finished-order-details">
+           <img src="images/icons/checkmark.png" class="order-checkmark">
+           <div class="expiration-information">This order will expire in ${hasExpired} hours</div>
+          </dv>
         </div>
         `;
   });
@@ -45,12 +68,18 @@ export async function loadPage() {
    let productsHTML = ``;
    
    products.forEach((product) => {
-     const productDate = dayjs(product.estimatedDeliveryTime);
+    const productDate = dayjs(product.estimatedDeliveryTime);
     const matchingProduct = getProduct(product.productId);
+   
+    const isDelivered = calculateOrderProgress(orderId, product.productId) === 100;
      
     productsHTML += `            
     <div class="product-image-container">
               <img src="${matchingProduct.image}">
+              <img src="images/icons/checkmark.png" class="product-checkmark ${
+                isDelivered ? 'delivered-product-checkmark'
+                            : ''
+              }">
             </div>
 
             <div class="product-details">

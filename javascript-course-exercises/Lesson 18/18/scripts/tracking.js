@@ -1,4 +1,4 @@
-import {getOrdersProduct, getOrder} from '../data/orders.js';
+import {getOrdersProduct, getOrder, calculateOrderProgress} from '../data/orders.js';
 import {getProduct, loadProductsFetch} from '../data/products.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import {renderAmazonHeader} from './shared/amazonHeader.js';
@@ -16,15 +16,11 @@ async function renderTrackingPage() {
  
  const ordersProduct = getOrdersProduct(orderId, productId);
  const product = getProduct(ordersProduct.productId);
- 
+
  const deliveryTime = dayjs(ordersProduct.estimatedDeliveryTime);
  const deliveryDate = deliveryTime.format('dddd, MMMM DD');
- 
- const currentTime = dayjs();
- const orderTime = dayjs(order.orderTime);
- const progress = (currentTime.diff(orderTime, 'minute') / deliveryTime.diff(orderTime, 'minute'))*100;
- 
- console.log(progress);
+
+ const progress = calculateOrderProgress(orderId, productId);
  
  const orderTrackingContainer = document.querySelector('.js-order-tracking');
  
