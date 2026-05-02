@@ -114,7 +114,7 @@
 
 .filter-settings {
   position: absolute;
-  bottom: -300px;
+  bottom: -375px;
   z-index: 100;
 
   border-radius: 5px;
@@ -261,6 +261,11 @@
 
 .is-editing-currency .currency-arrow {
   rotate: 90deg;
+}
+
+.favorite-icon {
+  height: 30px;
+  stroke-width: 1.5;
 }
 
 .amazon-header-right-section {

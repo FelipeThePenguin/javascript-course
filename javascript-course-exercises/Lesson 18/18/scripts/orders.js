@@ -71,7 +71,7 @@ export async function loadPage() {
     const productDate = dayjs(product.estimatedDeliveryTime);
     const matchingProduct = getProduct(product.productId);
    
-    const isDelivered = calculateOrderProgress(orderId, product.productId) === 100;
+    const isDelivered = calculateOrderProgress(orderId, product.productId) >= 100;
      
     productsHTML += `            
     <div class="product-image-container">

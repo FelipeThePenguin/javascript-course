@@ -1,5 +1,6 @@
 import {cart, addToCart, calculateCartQuantity} from '../data/cart.js';
 import {products, loadProducts, loadProductsFetch} from '../data/products.js';
+import {isFavorite, addFavorite, removeFavorite} from '../data/favorites.js';
 import {formatCurrency} from './utils/money.js';
 import {renderAmazonHeader} from './shared/amazonHeader.js';
 
@@ -8,14 +9,55 @@ function filterProducts() {
 const url = new URL(window.location.href);
 const search = url.searchParams.get('search');
 const filter = JSON.parse(url.searchParams.get('filter'));
+const favorites = JSON.parse(url.searchParams.get('favorites'));
+
+function searchRequirements(product, keyword) {
+ return (( (search.toLowerCase()).includes(keyword.toLowerCase()) || (product.name.toLowerCase()).includes(search.toLowerCase()) ) && 
+             (
+              product.rating.stars >= filter.starsRange &&
+              product.rating.count >= filter.ratingsRange.min && product.rating.count <= filter.ratingsRange.max &&
+              product.priceCents >= Number(filter.priceRange.min) * 100 && Number(product.priceCents) <= filter.priceRange.max * 100
+        ));
+}
 
 renderAmazonHeader();
 
 loadProductsFetch().then(() => {
+
+  if (JSON.parse(favorites)) {
+    const newArray = [];
+
+    products.forEach((product) => {
+      if (isFavorite(product.id)) {
+        newArray.push(product);
+      }
+    });
+    
+    products.splice(0, products.length);
+    
+    newArray.forEach((product) => {
+      products.push(product);
+    });
+
+  } else if (JSON.parse(favorites) === false) {
+     const newArray = [];
+
+    products.forEach((product) => {
+      if (!isFavorite(product.id)) {
+        newArray.push(product);
+      }
+    });
+    
+    products.splice(0, products.length);
+    
+    newArray.forEach((product) => {
+      products.push(product);
+    });
+  }
   
   if (search || filter) {
-     const searchInput = document.querySelector('.js-search-bar');
-     searchInput.value = search;
+    const searchInput = document.querySelector('.js-search-bar');
+    searchInput.value = search;
 
     const newArray = [];
     
@@ -23,52 +65,20 @@ loadProductsFetch().then(() => {
   
     products.forEach((product) => {
       product.keywords.forEach((keyword) => {
-        if ( (search.toLowerCase()).includes(keyword.toLowerCase())) {
-         newArray.push(product);
-        
-        return;
-        
+        if ( searchRequirements(product, keyword) && !newArray.includes(product)
+           ) {
+        newArray.push(product);
         }
       });
     });
-
-    products.forEach((product) => {
-      
-     if (
-        (product.name.toLowerCase()).includes(search.toLowerCase()) && !newArray.includes(product)
-     ){
-       newArray.push(product);
-      }
-      
-    });
     
     products.splice(0, products.length);
     
     newArray.forEach((product) => {
       products.push(product);
     });
-   
-    newArray.splice(0, products.length);
-    
-    products.forEach((product) => {
 
-     if (
-       product.rating.stars >= filter.starsRange &&
-       product.rating.count >= filter.ratingsRange.min && product.rating.count <= filter.ratingsRange.max &&
-       product.priceCents >= Number(filter.priceRange.min) * 100 && Number(product.priceCents) <= filter.priceRange.max * 100
-     ){
-       newArray.push(product);
-      }
-
-    });
-
-    products.splice(0, products.length);
-
-    newArray.forEach((product) => {
-      products.push(product);
-    });
-
-  }
+  } 
   renderProductsGrid();
 });
 
@@ -84,6 +94,9 @@ products.forEach((product) => {
           <div class="product-image-container">
             <img class="product-image"
               src="${product.image}">
+            <button class="select-favorite js-select-favorite" data-product-id="${product.id}">
+               <img src="images/icons/${isFavorite(product.id) ? '' : 'empty-'}star-icon.svg">
+            </button>
           </div>
 
           <div class="product-name limit-text-to-2-lines">
@@ -167,7 +180,20 @@ document.querySelectorAll('.js-add-to-cart')
   });
 });
 
+ document.querySelectorAll('.js-select-favorite').forEach((button) => {
+  button.addEventListener('click', () => {
+    const {productId} = button.dataset;
+
+    if (isFavorite(productId)) {
+     removeFavorite(productId);
+    } else {
+     addFavorite(productId);
+    }
+
+    renderProductsGrid();
+  });
+ });
+
 }
 
 filterProducts();
-

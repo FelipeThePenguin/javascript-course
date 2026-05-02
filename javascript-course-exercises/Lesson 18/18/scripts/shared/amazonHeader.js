@@ -10,6 +10,7 @@ export function renderAmazonHeader() {
   'JPY': 'japanese'
  };
 const currencyRate = currencies[selectedCurrency].value;
+let favorites = false;
 
  amazonHeader.innerHTML = `
   <div class="amazon-header-left-section">
@@ -32,6 +33,11 @@ const currencyRate = currencies[selectedCurrency].value;
           <img class="filter-icon js-filter-icon" src="images/icons/filter-products-icon.png">
 
           <div class="filter-settings js-filter-settings">
+            <div class="filter-option">
+             <p>Favorites:</p>
+             <img src="images/icons/empty-star-icon.svg" class="favorite-icon js-favorite-icon">
+            </div>
+
             <div class="filter-ratings-stars filter-option">
               <p>Stars rating:</p>
               <div class="stars-input-container">
@@ -129,7 +135,7 @@ const currencyRate = currencies[selectedCurrency].value;
     }
    };
    
-   window.location.href = `amazon.html?search=${searchValue}&filter=${JSON.stringify(filterObject)}`;
+   window.location.href = `amazon.html?search=${searchValue}&filter=${JSON.stringify(filterObject)}&favorites=${favorites}`;
  }
  
  searchButton.addEventListener('click', () => {
@@ -179,5 +185,20 @@ const currencyRate = currencies[selectedCurrency].value;
 
    window.location.href = window.location.href;
   });
+ });
+
+ const favoritesButton = document.querySelector('.js-favorite-icon');
+
+ favoritesButton.addEventListener('click', () => {
+  if (favoritesButton.classList.contains('is-favorite')) {
+    favoritesButton.classList.remove('is-favorite');
+    favoritesButton.src = 'images/icons/empty-star-icon.svg';
+    favorites = false;
+  } else {
+   favoritesButton.classList.add('is-favorite');
+   favoritesButton.src = 'images/icons/star-icon.svg';
+   favorites = true;
+  }
+
  });
 }
