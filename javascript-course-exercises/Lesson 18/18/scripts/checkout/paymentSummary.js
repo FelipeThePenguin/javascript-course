@@ -60,6 +60,27 @@ export function renderPaymentSummary() {
             </div>
           </div>
 
+          <div class="payment-summary-row payment-summary-title payment-options-container">
+           Payment Options:
+           <div class="payment-options">
+            <button class="payment-option js-payment-option selected-payment">
+             <img src="images/payment/visa.png"> <div class="payment-tooltip">Visa</div>
+            </button>
+            <button class="payment-option  js-payment-option">
+             <img src="images/payment/mastercard.svg"> <div class="payment-tooltip">Mastercard</div>
+            </button>
+            <button class="payment-option  js-payment-option">
+             <img src="images/payment/american-express.png"> <div class="payment-tooltip">American Express</div>
+            </button>
+            <button class="payment-option  js-payment-option">
+             <img src="images/payment/paypal.png"> <div class="payment-tooltip">Paypal</div>
+            </button>
+            <button class="payment-option  js-payment-option">
+             <img src="images/payment/delivery.svg"> <div class="payment-tooltip">Pay on Delivery</div>
+            </button>
+           </div>
+          </div>
+
           <button class="place-order-button button-primary js-place-order">
             Place your order
           </button>
@@ -68,8 +89,27 @@ export function renderPaymentSummary() {
   document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
   
   document.querySelector('.js-place-order')
+  .addEventListener('click', () => {
+    document.querySelector('.js-confirm-order-container').classList.add('is-ordering');
+
+  });
+
+  document.querySelectorAll('.js-payment-option').forEach((button) => {
+   button.addEventListener('click', () => {
+     document.querySelector('.selected-payment').classList.remove('selected-payment');
+     button.classList.add('selected-payment');
+   });
+  });
+
+  document.querySelector('.js-cancel-order-button')
+  .addEventListener('click', () => {
+    document.querySelector('.js-confirm-order-container').classList.remove('is-ordering');
+  });
+
+   document.querySelector('.js-confirm-order-button')
   .addEventListener('click', async () => {
-    try{
+
+     try{
       const response = await fetch('https://supersimplebackend.dev/orders', {
       method: 'POST',
       headers: {
@@ -82,11 +122,32 @@ export function renderPaymentSummary() {
     
     const order = await response.json();
     addOrder(order);
+    localStorage.setItem('cart', JSON.stringify([]));
     
     } catch (error) {
       console.log('Unexpected Error. Try again later.');
     }
-    
-    window.location.href = 'orders.html';
+
+    const status = document.querySelector('.js-confirm-status');
+    status.classList.add('confirm-status');
+
+    status.innerHTML = `
+     <img src="images/icons/loading-icon.gif" class="confirm-status-image">
+     <p class="confirm-status-text">Processing payment and order...</p>
+    `;
+
+    new Promise((resolve) => {
+      setTimeout(() => {
+      status.innerHTML = `
+      <img src="images/icons/confirm-checkmark.svg" class="confirm-status-image">
+      <p class="confirm-status-text">Order confirmed.</p>
+      `;
+      resolve();
+    }, 3000);
+  }).then(() => {
+    setTimeout(async () => {
+    window.location.href = 'orders.html';   
+    }, 5000);
+    });
   });
 }

@@ -59,7 +59,7 @@ export async function loadPage() {
           <div class="finished-order-details">
            <img src="images/icons/checkmark.png" class="order-checkmark">
            <div class="expiration-information">This order will expire in ${hasExpired} hours</div>
-          </dv>
+          </div>
         </div>
         `;
   });

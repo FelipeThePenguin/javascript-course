@@ -15,6 +15,17 @@ const productId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d';
     
     document.querySelector('.js-test-container').innerHTML = `
      <div class="js-payment-summary"></div>
+      <div class="confirm-order-container js-confirm-order-container">
+      <div class="confirm-order">
+        <div class="confirm-title">
+          <span>Confirm Order?</span>
+        </div>
+        <div class="confirm-options js-confirm-status">
+         <button class="button-primary js-confirm-order-button">Yes</button>
+         <button class="button-secondary js-cancel-order-button">No</button>
+        </div>
+      </div>
+    </div>
     `;
     
     spyOn(localStorage, 'getItem').and.callFake(() => {

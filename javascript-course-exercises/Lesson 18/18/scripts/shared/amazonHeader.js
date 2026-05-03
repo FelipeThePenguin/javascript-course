@@ -100,7 +100,7 @@ let favorites = false;
 
         <a class="cart-link header-link" href="checkout.html">
           <img class="cart-icon" src="images/icons/cart-icon.png">
-          <div class="cart-quantity js-cart-quantity">${calculateCartQuantity()}</div>
+          <div class="cart-quantity js-cart-quantity">${calculateCartQuantity() === 0 ? '' : calculateCartQuantity()}</div>
           <div class="cart-text">Cart</div>
         </a>
       </div>

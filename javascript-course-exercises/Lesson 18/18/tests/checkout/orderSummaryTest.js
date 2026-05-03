@@ -17,6 +17,17 @@ describe('test suite: renderOrderSummary', () => {
      <div class="js-checkout-header"></div>
      <div class="js-order-summary"></div>
      <div class="js-payment-summary"></div>
+      <div class="confirm-order-container js-confirm-order-container">
+      <div class="confirm-order">
+        <div class="confirm-title">
+          <span>Confirm Order?</span>
+        </div>
+        <div class="confirm-options js-confirm-status">
+         <button class="button-primary js-confirm-order-button">Yes</button>
+         <button class="button-secondary js-cancel-order-button">No</button>
+        </div>
+      </div>
+    </div>
     `;
     
     spyOn(localStorage, 'getItem').and.callFake(() => {
