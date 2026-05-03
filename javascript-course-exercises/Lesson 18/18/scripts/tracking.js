@@ -30,7 +30,7 @@ async function renderTrackingPage() {
         </a>
 
         <div class="delivery-date">
-         Arriving on ${deliveryDate}
+         ${progress >= 100 ? 'Product has already been arrived.' : `Arriving on ${deliveryDate}`}
         </div>
 
         <div class="product-info">
