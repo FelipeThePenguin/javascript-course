@@ -29,9 +29,8 @@ function getRandomProducts() {
 
 function generateRandomNumber(arr) {
   const num = Math.floor(Math.random() * (products.length));
-
   if (arr.includes(num)) {
-   generateRandomNumber(arr)
+   return generateRandomNumber(arr);
   } else {
     return num;
   }

@@ -1,5 +1,6 @@
 import { calculateCartQuantity } from "../../data/cart.js";
 import { currencies } from '../utils/currency.js';
+import { keywordsList } from "../../data/keywords.js";
 
 export function renderAmazonHeader() {
  const amazonHeader = document.querySelector('.js-amazon-header');
@@ -24,6 +25,7 @@ let favorites = false;
 
       <div class="amazon-header-middle-section">
         <input class="search-bar js-search-bar" type="text" placeholder="Search">
+        <div class="keywords-container js-keywords-container"></div>
 
         <button class="search-button js-search-button">
           <img class="search-icon" src="images/icons/search-icon.png">
@@ -115,6 +117,8 @@ let favorites = false;
   const priceInputMin = document.querySelector('.js-price-min');
   const priceInputMax = document.querySelector('.js-price-max');
 
+  const keywordContainer = document.querySelector('.js-keywords-container');
+
  function filterProducts() {
   const searchValue = searchInput.value;
    const starsValue= starsInput.value;
@@ -142,7 +146,36 @@ let favorites = false;
   filterProducts();
  });
 
- searchInput.addEventListener('keydown', (event) => {
+ searchInput.addEventListener('keyup', (event) => {
+  const searchValue = searchInput.value.split(' ');
+  const lastWord = searchValue[searchValue.length - 1];
+  
+  if (lastWord) {
+   let keywordsHTML = ``;
+   const keywords = keywordsList.filter((keyword) => keyword.includes(lastWord)); 
+
+   if (keywords.length === 0) {
+    keywordContainer.classList.remove('contains-keyword');
+    return;
+   }
+
+   keywords.forEach((keyword) => {
+    keywordsHTML += `<div class="js-keyword" data-keyword="${keyword}">${keyword}</div>`
+   });
+   keywordContainer.innerHTML = keywordsHTML;
+   keywordContainer.classList.add('contains-keyword');
+   document.querySelectorAll('.js-keyword').forEach((option) => {
+    option.addEventListener('click', () => {
+     const {keyword} = option.dataset;
+     searchValue[searchValue.length - 1] = keyword;
+     searchInput.value = searchValue.join(' ');
+     keywordContainer.classList.remove('contains-keyword');    
+    });
+   });
+ } else {
+  keywordContainer.classList.remove('contains-keyword');
+ }
+
   if (event.key === 'Enter') {
    filterProducts();
   }

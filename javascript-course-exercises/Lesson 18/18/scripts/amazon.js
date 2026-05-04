@@ -23,7 +23,6 @@ function searchRequirements(product, keyword) {
 renderAmazonHeader();
 
 loadProductsFetch().then(() => {
-
   if (JSON.parse(favorites)) {
     const newArray = [];
 
