@@ -3,7 +3,7 @@ import { convertCurrency } from './utils/currency.js';
 
 import { orders, calculateOrderProgress, allIsDelivered, addExpirationDate, removeOrder} from '../data/orders.js';
 import { getProduct, loadProductsFetch } from '../data/products.js';
-import { cart, addToCart } from '../data/cart.js';
+import { cart, addToCart, calculateCartQuantity } from '../data/cart.js';
 
 import {renderAmazonHeader} from './shared/amazonHeader.js';
 
@@ -97,6 +97,10 @@ export async function loadPage() {
                 <img class="buy-again-icon" src="images/icons/buy-again.png">
                 <span class="buy-again-message">Buy it again</span>
               </button>
+              <div class="added-to-cart js-added-to-cart-${product.productId}">
+                <img src="images/icons/checkmark.png">
+                Added
+              </div>
             </div>
 
             <div class="product-actions">
@@ -114,8 +118,11 @@ export async function loadPage() {
  document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
  
  document.querySelectorAll('.js-buy-again-button').forEach((button) => {
+   let timeoutId;
+
    button.addEventListener('click' , () => {
      const { productId } = button.dataset;
+     const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
      let matchingProduct;
      
      cart.forEach((cartItem) => {
@@ -124,10 +131,17 @@ export async function loadPage() {
       }
      });
      
-     if (!matchingProduct) {
+     if (!matchingProduct || matchingProduct.quantity + 1 < 1000) {
        addToCart(productId);
-     } else if (matchingProduct.quantity + 1 < 1000) {
-       addToCart(productId);
+       
+       document.querySelector('.js-cart-quantity').innerHTML = calculateCartQuantity();
+        addedMessage.classList.add('show-added-message');
+    
+        clearTimeout(timeoutId);
+    
+        timeoutId = setTimeout(() => {
+          addedMessage.classList.remove('show-added-message');
+        }, 2000);
      }
      else { 
        alert('Maximum quantity reached! Product quantity must be less than 1000');
