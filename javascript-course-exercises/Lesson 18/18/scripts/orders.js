@@ -115,7 +115,7 @@ export async function loadPage() {
    return productsHTML;
  }
 
- document.querySelector('.js-orders-grid').innerHTML = ordersHTML;
+ document.querySelector('.js-orders-grid').innerHTML = ordersHTML || 'There are no orders here.';
  
  document.querySelectorAll('.js-buy-again-button').forEach((button) => {
    let timeoutId;

@@ -109,6 +109,12 @@ export function renderPaymentSummary() {
    document.querySelector('.js-confirm-order-button')
   .addEventListener('click', async () => {
 
+    if (cart.length === 0) {
+      document.querySelector('.js-confirm-order-container').classList.remove('is-ordering');
+      alert('Order denied. Please enter a product first before ordering.');
+      return;
+    }
+
      try{
       const response = await fetch('https://supersimplebackend.dev/orders', {
       method: 'POST',

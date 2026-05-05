@@ -103,7 +103,7 @@ export function renderOrderSummary() {
     return html;
   }
   
-  document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
+  document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML || 'Please enter a product first before ordering.';
   
   document.querySelectorAll('.js-delete-link').forEach((link) => {
     link.addEventListener('click', () => {
