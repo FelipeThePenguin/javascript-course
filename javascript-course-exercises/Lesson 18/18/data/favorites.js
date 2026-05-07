@@ -1,4 +1,10 @@
-const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+export let favorites;
+
+export function loadFromStorage() {
+ favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+}
+
+loadFromStorage();
 
 function saveToStorage() {
  localStorage.setItem('favorites', JSON.stringify(favorites));
@@ -17,6 +23,10 @@ export function isFavorite(productId) {
 }
 
 export function addFavorite(productId) {
+ if (isFavorite(productId)) {
+  return;
+ }
+ 
  favorites.unshift(productId);
 
  saveToStorage();

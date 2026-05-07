@@ -70,7 +70,17 @@ export function calculateCartQuantity() {
   return cartQuantity;
 }
 
+function isFloat(n){
+    return Number(n) === n && n % 1 !== 0;
+}
+
 export function updateQuantity(productId, newQuantity) {
+  if (newQuantity < 0 || newQuantity >= 1000) {
+    return;
+  } else if (isFloat(newQuantity)) {
+    return;
+  }
+
   let matchingItem;
 
   cart.forEach((cartItem) => {
@@ -78,10 +88,15 @@ export function updateQuantity(productId, newQuantity) {
       matchingItem = cartItem;
     }
   });
+
+  if (!matchingItem || !newQuantity) {
+    return;
+  }
   
   matchingItem.quantity = newQuantity;
   
   saveToStorage();
+  return 'finished';
 }
 
 export function updateDeliveryOption(productId, deliveryOptionId) {
@@ -108,7 +123,7 @@ export function loadCart(fun) {
   xhr.addEventListener('load', () => {
     console.log(xhr.response);
     
-    fun();
+    fun(xhr.response);
   });
   
 
@@ -116,14 +131,9 @@ export function loadCart(fun) {
   xhr.send();
 }
 
-export async function loadCartFetch() {
-  
-  const response = await fetch('https://supersimplebackend.dev');
-  
+export async function loadCartFetch() { 
+  const response = await fetch('https://supersimplebackend.dev/cart');  
   const text = await response.text();
-  
   console.log(text);
-  
   return text;
-  
 }

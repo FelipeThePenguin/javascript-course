@@ -128,12 +128,12 @@ export function renderOrderSummary() {
   function saveToCart(productId) {
       const inputValue = Number(document.querySelector(`.js-quantity-input-${productId}`).value);
       
-      if (inputValue < 0 || inputValue >= 1000) {
-        alert('Please enter a value from 0 to 999');
+      const result = updateQuantity(productId, inputValue);
+
+      if (!result) {
+        alert('Please enter a value that is between 1-999 and is not a decimal');
         return;
       }
-      
-      updateQuantity(productId, inputValue);
       
       renderOrderSummary();
       renderCheckoutHeader();

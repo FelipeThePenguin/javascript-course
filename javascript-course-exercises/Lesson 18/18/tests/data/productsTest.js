@@ -1,4 +1,4 @@
-import {getProduct, loadProductsFetch, Product, Clothing, Appliance} from '../../data/products.js';
+import {getProduct, loadProductsFetch, loadProducts, Product, Clothing, Appliance} from '../../data/products.js';
 
 const productId1 = 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6'; // Normal Product
 const productId2 = '83d4ca15-0f35-48f5-b7a3-1ea210004f2e'; // Clothing Product
@@ -137,4 +137,27 @@ describe('test suite: Appliance', () => {
     expect(product.extraInfoHTML()).toContain('href="images/appliance-warranty.png"');
   });
 
+});
+
+describe('test suite: loadProducts', () => {
+  beforeAll((done) => {
+    loadProducts(() => {
+      done();
+    });
+  });
+
+  it('loads the products from the backend using callbacks', () => {
+     const product = getProduct(productId3);
+     
+    compareProperties(product, {
+      id: productId3,
+      image: 'images/products/black-2-slot-toaster.jpg',
+      name: '2 Slot Toaster - Black',
+      rating: {
+        stars: 5,
+        count: 2197
+      },
+      priceCents: 1899
+    });
+  });
 });

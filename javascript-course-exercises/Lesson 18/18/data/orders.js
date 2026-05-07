@@ -1,7 +1,13 @@
 import { getProduct } from "./products.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 
-export const orders = JSON.parse(localStorage.getItem('orders')) || [];
+export let orders;
+
+loadFromStorage();
+
+export function loadFromStorage() {
+ orders = JSON.parse(localStorage.getItem('orders')) || [];
+}
 
 export function addOrder(order) {
   orders.unshift(order);
@@ -36,6 +42,10 @@ export function getOrder(orderId) {
 export function getOrdersProduct(orderId, productId) {
   const order = getOrder(orderId);
   let matchingProduct;
+
+  if (!order) {
+    return;
+  }
   
   order.products.forEach((product) => {
     if (product.productId === productId) {
@@ -47,11 +57,13 @@ export function getOrdersProduct(orderId, productId) {
 }
 
 export function calculateOrderProgress(orderId, productId) {
-   const order = getOrder(orderId);
-   
+   const order = getOrder(orderId); 
    const ordersProduct = getOrdersProduct(orderId, productId);
-   const product = getProduct(ordersProduct.productId);
    
+   if (!ordersProduct || !order) {
+    return;
+   }
+
    const deliveryTime = dayjs(ordersProduct.estimatedDeliveryTime);
    const deliveryDate = deliveryTime.format('dddd, MMMM DD');
    
@@ -65,8 +77,12 @@ export function calculateOrderProgress(orderId, productId) {
 export function allIsDelivered(order) {
  let deliveredProducts = 0;
 
+ if (!order?.id || !order?.products) {
+  return;
+ }
+
  order.products.forEach((product) => {
-  if (calculateOrderProgress(order.id, product.productId) === 100) {
+  if (calculateOrderProgress(order.id, product.productId) >= 100) {
    deliveredProducts++;
   }
  });
@@ -76,10 +92,7 @@ export function allIsDelivered(order) {
 
 export function addExpirationDate(order) {
  const expirationDate = dayjs().add(1, 'day').toISOString();
-
- order.expirationDate = order.expirationDate ? order.expirationDate : expirationDate;
- 
+ order.expirationDate = order.expirationDate ?? expirationDate;
  saveToStorage();
-
  return order.expirationDate;
 }
