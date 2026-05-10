@@ -68,7 +68,8 @@ const productId2 = '15b6fc6f-327a-4ec4-896f-486349e85a3d';
       confirmOrder(order);
    
       expect(localStorage.setItem).toHaveBeenCalledTimes(1);
-      expect(localStorage.setItem).toHaveBeenCalledWith('orders', JSON.stringify([order]));
+      expect(localStorage.setItem).toHaveBeenCalledWith('orders', JSON.stringify(orders));
+      expect(orders.includes(order)).toEqual(true);
       expect(cartObject.clearCart).toHaveBeenCalledTimes(1);
       
       jasmine.clock().tick(8000); // Waits for the timeout to finish

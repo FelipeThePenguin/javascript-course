@@ -10,6 +10,8 @@ export const navigationObject = {
  }
 };
 
+let processingOrder = false;
+
 export function renderPaymentSummary() {
   let productPriceCents = 0;
   let shippingPriceCents = 0;
@@ -114,9 +116,11 @@ export function renderPaymentSummary() {
 
    document.querySelector('.js-confirm-order-button')
   .addEventListener('click', async () => {
+    if (!processingOrder) {
+    processingOrder = true;
     const order = await getOrderBackend();
-
     confirmOrder(order);
+    }
   });
 }
 
@@ -133,6 +137,7 @@ export async function getOrderBackend() {
       });
       
       const order = await response.json();
+      processingOrder = false;
       return order;
       
       } catch (error) {
