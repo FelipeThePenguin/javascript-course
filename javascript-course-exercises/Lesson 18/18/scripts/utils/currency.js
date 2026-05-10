@@ -15,15 +15,16 @@ export const currencies = {
  }
 };
 
-export function convertCurrency(moneyCents) {
+export let currency;
 
- let currency = localStorage.getItem('currency') || 'USD';
-
- if (currency.length !== 3)  {
-  currency = 'USD';
- }
- 
+export function convertCurrency(moneyCents) { 
  const money = formatCurrency(moneyCents * currencies[currency].value);
 
  return `${currencies[currency].type}${money}`;
 }
+
+export function loadFromStorage() {
+  currency = localStorage.getItem('currency') || 'USD';
+}
+
+loadFromStorage();

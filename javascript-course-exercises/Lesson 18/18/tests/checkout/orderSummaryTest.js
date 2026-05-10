@@ -104,4 +104,17 @@ describe('test suite: renderOrderSummary', () => {
     expect(document.querySelector(`.js-payment-summary-money-shipping-price`).innerText).toContain('$14.98');
     expect(document.querySelector(`.js-payment-summary-money-total-price`).innerText).toContain('$63.50');
   });
+
+  it('updates the quantity of a product', () => {
+   document.querySelector(`.js-update-link-${productId1}`).click();
+   document.querySelector(`.js-quantity-input-${productId1}`).value = 3;
+   document.querySelector(`.js-save-link-${productId1}`).click();
+   
+   expect(cart.length).toEqual(2);
+   expect(cart[0].productId).toEqual(productId1);
+   expect(cart[0].quantity).toEqual(3);
+   expect(document.querySelector(`.js-payment-summary-money-product-price`).innerText).toContain('$53.65');
+   expect(document.querySelector(`.js-payment-summary-money-total-price`).innerText).toContain('$64.50');
+   expect(document.querySelector(`.js-quantity-label-${productId1}`).innerText).toContain('3');
+  });
 });

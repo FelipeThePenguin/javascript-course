@@ -137,3 +137,9 @@ export async function loadCartFetch() {
   console.log(text);
   return text;
 }
+
+export const cartObject = {
+  clearCart() {
+    localStorage.setItem('cart', JSON.stringify([]));
+  }
+};

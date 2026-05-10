@@ -1,8 +1,14 @@
-import {cart, calculateCartQuantity} from '../../data/cart.js';
+import {cart, calculateCartQuantity, cartObject} from '../../data/cart.js';
 import {getProduct} from '../../data/products.js';
 import {getDeliveryOption} from '../../data/deliveryOptions.js';
 import {convertCurrency} from '../utils/currency.js';
-import {addOrder} from '../../data/orders.js'
+import {addOrder} from '../../data/orders.js';
+
+export const navigationObject = {
+ changeUrl(url) {
+  window.location.href = url;
+ }
+};
 
 export function renderPaymentSummary() {
   let productPriceCents = 0;
@@ -108,31 +114,41 @@ export function renderPaymentSummary() {
 
    document.querySelector('.js-confirm-order-button')
   .addEventListener('click', async () => {
+    const order = await getOrderBackend();
+
+    confirmOrder(order);
+  });
+}
+
+export async function getOrderBackend() {
+  try{
+        const response = await fetch('https://supersimplebackend.dev/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          cart: cart
+        })
+      });
+      
+      const order = await response.json();
+      return order;
+      
+      } catch (error) {
+        console.log('Unexpected Error. Try again later.');
+  }
+}
+
+export async function confirmOrder(order) {
 
     if (cart.length === 0) {
       document.querySelector('.js-confirm-order-container').classList.remove('is-ordering');
       alert('Order denied. Please enter a product first before ordering.');
       return;
     }
-
-     try{
-      const response = await fetch('https://supersimplebackend.dev/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        cart: cart
-      })
-    });
-    
-    const order = await response.json();
     addOrder(order);
-    localStorage.setItem('cart', JSON.stringify([]));
-    
-    } catch (error) {
-      console.log('Unexpected Error. Try again later.');
-    }
+    cartObject.clearCart();
 
     const status = document.querySelector('.js-confirm-status');
     status.classList.add('confirm-status');
@@ -141,19 +157,12 @@ export function renderPaymentSummary() {
      <img src="images/icons/loading-icon.gif" class="confirm-status-image">
      <p class="confirm-status-text">Processing payment and order...</p>
     `;
-
-    new Promise((resolve) => {
-      setTimeout(() => {
-      status.innerHTML = `
+     
+      setTimeout(() => {status.innerHTML = `
       <img src="images/icons/confirm-checkmark.svg" class="confirm-status-image">
       <p class="confirm-status-text">Order confirmed.</p>
-      `;
-      resolve();
-    }, 3000);
-  }).then(() => {
-    setTimeout(async () => {
-    window.location.href = 'orders.html';   
-    }, 5000);
-    });
-  });
-}
+      `}, 3000);
+     
+      setTimeout(() => {navigationObject.changeUrl('orders.html')}, 8000);     
+    
+  }

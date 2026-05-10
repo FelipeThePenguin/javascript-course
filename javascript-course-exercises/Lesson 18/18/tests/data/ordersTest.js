@@ -68,12 +68,21 @@ function compareOrders(orderArray) {
 }
 
  describe('test suite: addOrder', () => {
+  let getItemSpy;
   beforeEach(() => {
    spyOn(localStorage, 'setItem');
+   getItemSpy = spyOn(localStorage, 'getItem');
+  });
+
+   afterEach(() => {
+   getItemSpy.and.callFake(() => {
+    return JSON.stringify([]);
+   });
+   loadFromStorage();
   });
 
   it('adds an order', () => {
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+   getItemSpy.and.callFake(() => {
     return JSON.stringify([]);
    });
    const orderObject = order1;
@@ -88,7 +97,7 @@ function compareOrders(orderArray) {
   });
 
    it('adds another order to the leftmost of the orders array', () => {
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+   getItemSpy.and.callFake(() => {
     return JSON.stringify([order1]);
    });
    const orderObject = order2;
@@ -105,14 +114,22 @@ function compareOrders(orderArray) {
  });
 
  describe('test suite: removeOrder', () => {
+  let getItemSpy;
   beforeEach(() => {
    spyOn(localStorage, 'setItem');
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+    getItemSpy = spyOn(localStorage, 'getItem');
+    getItemSpy.and.callFake(() => {
     return JSON.stringify([order1, order2]);
    });
-
    loadFromStorage();
   });
+
+   afterEach(() => {
+   getItemSpy.and.callFake(() => {
+    return JSON.stringify([]);
+   });
+   loadFromStorage();
+   });
 
   it('removes an order that is in the cart', () => {
    const orderId = order1.id;
@@ -138,11 +155,19 @@ function compareOrders(orderArray) {
  });
 
  describe('test suite: getOrder', () => {
+  let getItemSpy;
   beforeEach(() => {
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+   getItemSpy = spyOn(localStorage, 'getItem');
+   getItemSpy.and.callFake(() => {
     return JSON.stringify([order1, order2]);
    });
+   loadFromStorage();
+  });
 
+  afterEach(() => {
+   getItemSpy.and.callFake(() => {
+    return JSON.stringify([]);
+   });
    loadFromStorage();
   });
 
@@ -164,11 +189,19 @@ function compareOrders(orderArray) {
  });
 
  describe('test suite: getOrdersProduct', () => {
+  let getItemSpy;
   beforeEach(() => {
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+   getItemSpy = spyOn(localStorage, 'getItem');
+   getItemSpy.and.callFake(() => {
     return JSON.stringify([order1, order2]);
    });
+   loadFromStorage();
+  });
 
+  afterEach(() => {
+   getItemSpy.and.callFake(() => {
+    return JSON.stringify([]);
+   });
    loadFromStorage();
   });
 
@@ -199,11 +232,19 @@ function compareOrders(orderArray) {
  });
 
  describe('test suite: allIsDelivered', () => {
+  let getItemSpy;
   beforeEach(() => {
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+   getItemSpy = spyOn(localStorage, 'getItem');
+   getItemSpy.and.callFake(() => {
     return JSON.stringify([order1, order2]);
    });
+   loadFromStorage();
+  });
 
+  afterEach(() => {
+   getItemSpy.and.callFake(() => {
+    return JSON.stringify([]);
+   });
    loadFromStorage();
   });
 
@@ -220,9 +261,18 @@ function compareOrders(orderArray) {
  });
 
  describe('test suite: calculateOrderProgress', () => {
+  let getItemSpy;
   beforeEach(() => {
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+   getItemSpy = spyOn(localStorage, 'getItem');
+   getItemSpy.and.callFake(() => {
     return JSON.stringify([order1, order2]);
+   });
+   loadFromStorage();
+  });
+
+  afterEach(() => {
+   getItemSpy.and.callFake(() => {
+    return JSON.stringify([]);
    });
    loadFromStorage();
   });
@@ -254,10 +304,19 @@ function compareOrders(orderArray) {
  });
 
   describe('test suite: addExpirationDate', () => {
+  let getItemSpy;
   beforeEach(() => {
    spyOn(localStorage, 'setItem');
-   spyOn(localStorage, 'getItem').and.callFake(() => {
+   getItemSpy = spyOn(localStorage, 'getItem');
+   getItemSpy.and.callFake(() => {
     return JSON.stringify([order1, order2]);
+   });
+   loadFromStorage();
+  });
+
+  afterEach(() => {
+   getItemSpy.and.callFake(() => {
+    return JSON.stringify([]);
    });
    loadFromStorage();
   });
